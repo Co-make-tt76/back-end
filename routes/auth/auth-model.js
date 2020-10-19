@@ -30,7 +30,7 @@ async function add (user) {
     const [id] = await db("users").insert(userInfo, "id")
     return findById(id);
   } catch (error) {
-    throw new Error(`cannot create user ${user.name}`);
+    throw new Error(`cannot create user ${user.name}: ${error.message}`);
   }
 };
 
@@ -39,7 +39,7 @@ async function addLocation (location) {
     const [id] = await db("locations").insert(location, "id")
     return id;
   } catch (error) {
-    throw new Error(`problem with adding location`);
+    throw new Error(`problem with adding location: ${error.message}`);
   }
 }
 
