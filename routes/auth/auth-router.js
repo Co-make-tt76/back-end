@@ -29,7 +29,7 @@ router.post("/register", (req, res) => {
         res.status(201).json(user)
       })
       .catch(err => {
-        res.status(500).json({ message: "Failed to create new user", error: err.message })
+        res.status(500).json({ message: "Failed to create new user", error: err })
       })
   } else {
     res.status(400).json({ message: "Must include name,  email, password, & location"})
