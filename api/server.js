@@ -1,0 +1,40 @@
+const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
+// const db = require("../database/dbConfig");
+
+// const authenticate = require('../auth/authenticate-middleware.js');
+// const authRouter = require('../routes/auth/auth-router.js');
+
+const server = express();
+
+// server.use(morgan('dev'))
+// server.use(helmet());
+// server.use(cors());
+server.use(express.json());
+
+
+// server.use('/api/auth', authRouter);
+// server.use('/api/user', userRouter);
+// server.use('/api/issues', authRouter);
+
+server.get('/status', async (req, res) => {
+  //checking knex status too
+  res.status(200).json({
+    api: true,
+    // db: await getDbStatus(),
+    //any other db's to check?
+  });
+});
+
+module.exports = server;
+
+async function getDbStatus() {
+  try{
+    await db.raw('select 1+1 as result');
+    return true;
+  } catch(err) {
+    console.log(err)
+    return false;
+  }
+}
