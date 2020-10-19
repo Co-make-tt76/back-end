@@ -3,14 +3,22 @@
 
 inlc terminal commands for tests, setting up dev server,
 
-| Task | Endpoint | Expects | Returns | Token req'd |
+| Task | Endpoint | POST Expects | Returns | Token req'd |
 |---|---|---|---|---|
-| Register User | /auth/register POST | {name: "required", email: "required", password: "required",  role: "required" phone: optional, location: {streetAddress: "optional", city: "required", state: "required", zipCode: 12345 }} | ??? | No |
+| Check Server Status | /status GET |  | status of all servers | No |
 | Register User | /auth/register POST | ```{name: "required", email: "required", password: "required",  role: "required" phone: optional, location: {streetAddress: "optional", city: "required", state: "required", zipCode: 12345 }}``` | ??? | No |
+| Register User | /auth/register POST | {name: "required", email: "required", password: "required",  role: "required" phone: optional, location: {streetAddress: "optional", city: "required", state: "required", zipCode: 12345 }} | ??? | No |
 | Login User | /auth/login POST | email & password | ??? | No |
-| Logout User | TBD: /auth/logout | ???  | ??? | Yes |
-|   |   |   |   |   |
-|   |   |   |   |   |
+| Logout User | TBD: /auth/logout | ???  | ??? | Yes? |
+| Update Profile | /user/:id PUT |   |   |   |
+| Add Issue | /issues POST |   |   |   |
+| Edit Issue | /issues/:id PUT/DELETE |   |   |   |
+| Add Comment on Issue | /issues/:id/comment POST |   |   |   |
+| Edit Comment on Issue | /issues/:id/comment/:id PUT/DELETE |   |   |   |
+| Add Suggestion on Issue | /issues/:id/suggestion POST |   |   |   |
+| Edit Suggestion on Issue | /issues/:id/suggestion/:id PUT/DELETE |   |   |   |
+| Upvote  | [issue, comment, or suggestion]/upvote GET | any specific issue/comment/suggestion endpoint ending in /:id |   |   |
+| Downvote  | [issue, comment, or suggestion]/downvote GET | any specific issue/comment/suggestion endpoint ending in /:id |   |   |
 |   |   |   |   |   |
 |   |   |   |   |   |
 
