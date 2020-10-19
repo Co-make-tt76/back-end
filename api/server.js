@@ -3,8 +3,8 @@ const cors = require('cors');
 const helmet = require('helmet');
 // const db = require("../database/dbConfig");
 
-// const authenticate = require('../auth/authenticate-middleware.js');
-// const authRouter = require('../routes/auth/auth-router.js');
+const authenticate = require('../routes/auth/authenticate-middleware.js');
+const authRouter = require('../routes/auth/auth-router.js');
 
 const server = express();
 
@@ -14,7 +14,7 @@ const server = express();
 server.use(express.json());
 
 
-// server.use('/api/auth', authRouter);
+server.use('/api/auth', authRouter);
 // server.use('/api/user', userRouter);
 // server.use('/api/issues', authRouter);
 

@@ -1,4 +1,4 @@
-const router = require('express').Router();
+const router = require("express").Router();
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -6,7 +6,7 @@ const configs = require("../../api/configs");
 const Users = require("./auth-model");
 const { isValid } = require("./auth-services");
 
-router.post('/register', (req, res) => {
+router.post("/register", (req, res) => {
   const credentials = req.body;
   if(isValid(credentials)){
     const rounds = process.env.BCRYPT_ROUNDS || 4;
@@ -24,7 +24,7 @@ router.post('/register', (req, res) => {
   }
 });
 
-router.post('/login', (req, res) => {
+router.post("/login", (req, res) => {
   const { username, password } = req.body;
   if (isValid(req.body)) {
     Users.findBy({ username: username })

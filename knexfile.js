@@ -7,10 +7,10 @@ module.exports = {
     },
 	  useNullAsDefault: true,
     migrations: {
-      directory: './data/migrations'
+      directory: './database/migrations'
     },
     seeds: {
-      directory: './data/seeds'
+      directory: './database/seeds'
     },
   // needed when using foreign keys
   pool: {
