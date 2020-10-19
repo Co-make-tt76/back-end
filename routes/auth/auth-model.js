@@ -2,6 +2,7 @@ const db = require("../../database/db-config")
 
 module.exports = {
   add,
+  getAllUsers,
   findById,
   findBy,
 };
@@ -14,6 +15,10 @@ async function add (user) {
   } catch (error) {
     throw new Error(`cannot create user ${user.username}`);
   }
+}
+
+function getAllUsers () {
+  return db("users")
 }
 
 function findBy (filter) {

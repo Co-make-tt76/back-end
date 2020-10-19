@@ -1,22 +1,22 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-// const db = require("../database/dbConfig");
+const db = require("../database/db-config");
 
 const authenticate = require('../routes/auth/authenticate-middleware.js');
-const authRouter = require('../routes/auth/auth-router.js');
+const authRouter = require('../routes/auth/auth-router');
 
 const server = express();
 
 // server.use(morgan('dev'))
-// server.use(helmet());
-// server.use(cors());
+server.use(helmet());
+server.use(cors());
 server.use(express.json());
 
 
 server.use('/api/auth', authRouter);
 // server.use('/api/user', userRouter);
-// server.use('/api/issues', authRouter);
+server.use('/api/issues', authRouter);
 
 server.get('/status', async (req, res) => {
   //checking knex status too

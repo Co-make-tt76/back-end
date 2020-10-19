@@ -6,6 +6,17 @@ const configs = require("../../api/configs");
 const Users = require("./auth-model");
 const { isValid } = require("./auth-services");
 
+//temp/sanity check
+router.get('/users', (req, res) => {
+  Users.getAllUsers()
+    .then(users => {
+      res.status(201).json(users)
+    })
+    .catch(err => {
+      res.status(500).json({ message: "Failed to get all users" })
+    })
+})
+
 router.post("/register", (req, res) => {
   const credentials = req.body;
   if(isValid(credentials)){
@@ -18,7 +29,7 @@ router.post("/register", (req, res) => {
         res.status(201).json(user)
       })
       .catch(err => {
-        res.status(500).json({ message: "Failed to create new user:" })
+        res.status(500).json({ message: "Failed to create new user" })
       })
   } else {
     res.status(400).json({ message: "Must include name,  email, password, & location"})
