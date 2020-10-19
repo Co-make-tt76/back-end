@@ -1,22 +1,22 @@
 
 exports.up = function(knex) {
   return knex.schema
-    .createTable("locations", tbl => {
-      tbl.increments();
-      tbl.string("street_address");
-      tbl.string("city").notNullable();
-      tbl.string("state").notNullable();
-      tbl.string("zip_code").notNullable();
+    .createTable("locations", locations => {
+      locations.increments();
+      locations.string("street_address");
+      locations.string("city").notNullable();
+      locations.string("state").notNullable();
+      locations.string("zip_code").notNullable();
     })
 
-    .createTable("users", tbl => {
-      tbl.increments();
-      tbl.string("name").notNullable();
-      tbl.string("email").notNullable();
-      tbl.string("password").notNullable();
-      tbl.string("role").defaultTo("user").notNullable();
-      tbl.string("phone");
-      tbl.integer("location_id")
+    .createTable("users", users => {
+      users.increments();
+      users.string("name").notNullable();
+      users.string("email").notNullable();
+      users.string("password").notNullable();
+      users.string("role").defaultTo("user").notNullable();
+      users.string("phone");
+      users.integer("location_id")
         .unsigned()
         .notNullable()
         .references('id')
@@ -25,36 +25,81 @@ exports.up = function(knex) {
         .onDelete('RESTRICT');
     })
 
-    .createTable("issues", tbl => {
-      tbl.increments();
+    .createTable("issues", issues => {
+      issues.increments();
       //Did I timestamps right???
-      tbl.timestamps(true, true);
-      tbl.string("name").notNullable();
-      tbl.text("description").notNullable();
-      tbl.integer("author_id")
+      issues.timestamps(true, true);
+      issues.string("name").notNullable();
+      issues.text("description").notNullable();
+      issues.integer("author_id")
         .unsigned()
         .notNullable()
         .references('id')
         .inTable('users')
         .onUpdate('CASCADE')
         .onDelete('RESTRICT');
-      tbl.integer("location_id")
+      issues.integer("location_id")
         .unsigned()
         .notNullable()
         .references('id')
         .inTable('locations')
         .onUpdate('CASCADE')
         .onDelete('RESTRICT');
-      tbl.string("status").notNullable().defaultTo("new");
-      tbl.integer("upvotes").notNullable();
-      tbl.integer("downvotes").notNullable();
+      issues.string("status").notNullable().defaultTo("new");
+      issues.integer("upvotes").notNullable();
+      issues.integer("downvotes").notNullable();
     })
 
-    //TODO COMMENTS TABLE
-    //TODO SUGGESTIONS TABLE
+    .createTable("comments", comments => {
+      comments.increments();
+      comments.text("comment").notNullable();
+      comments.integer("author_id")
+        .unsigned()
+        .notNullable()
+        .references('id')
+        .inTable('users')
+        .onUpdate('CASCADE')
+        .onDelete('RESTRICT');
+      comments.integer("issue_id")
+        .unsigned()
+        .notNullable()
+        .references('id')
+        .inTable('issues')
+        .onUpdate('CASCADE')
+        .onDelete('RESTRICT');
+      comments.integer("upvotes").notNullable()
+      comments.integer("downvotes").notNullable()
+      comments.timestamps(true, true);
+    })
 
+    .createTable("suggestions", suggestions => {
+      suggestions.increments();
+      suggestions.text("suggestion").notNullable();
+      suggestions.integer("author_id")
+        .unsigned()
+        .notNullable()
+        .references('id')
+        .inTable('users')
+        .onUpdate('CASCADE')
+        .onDelete('RESTRICT');
+      suggestions.integer("issue_id")
+        .unsigned()
+        .notNullable()
+        .references('id')
+        .inTable('issues')
+        .onUpdate('CASCADE')
+        .onDelete('RESTRICT');
+      suggestions.integer("upvotes").notNullable()
+      suggestions.integer("downvotes").notNullable()
+      suggestions.timestamps(true, true);
+    });
 };
 
 exports.down = function(knex) {
-  //TODO FINISH THIS
+  return knex.schema
+    .dropTableIfExists("suggestions")
+    .dropTableIfExists("comments")
+    .dropTableIfExists("issues")
+    .dropTableIfExists("users")
+    .dropTableIfExists("locations");
 };
