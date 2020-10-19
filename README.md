@@ -6,7 +6,7 @@ inlc terminal commands for tests, setting up dev server,
 | Task | Endpoint | Expects | Returns | Token req'd |
 |---|---|---|---|---|
 | Register User | /auth/register POST | {name: "required", email: "required", password: "required",  role: "required" phone: optional, location: {streetAddress: "optional", city: "required", state: "required", zipCode: 12345 }} | ??? | No |
-| Register User | /auth/register POST | `{name: "required", email: "required", password: "required",  role: "required" phone: optional, location: {streetAddress: "optional", city: "required", state: "required", zipCode: 12345 }}` | ??? | No |
+| Register User | /auth/register POST | ```{name: "required", email: "required", password: "required",  role: "required" phone: optional, location: {streetAddress: "optional", city: "required", state: "required", zipCode: 12345 }}``` | ??? | No |
 | Login User | /auth/login POST | email & password | ??? | No |
 | Logout User | TBD: /auth/logout | ???  | ??? | Yes |
 |   |   |   |   |   |
