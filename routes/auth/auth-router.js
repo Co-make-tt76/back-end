@@ -46,6 +46,8 @@ router.post("/login", (req, res) => {
   }
 });
 
+//TODO Logout
+
 module.exports = router;
 
 function getJwt(user) {
