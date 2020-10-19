@@ -17,17 +17,17 @@ router.post("/register", (req, res) => {
         res.status(201).json(user)
       })
       .catch(err => {
-        res.status(500).json({ message: "Failed to create new user" })
+        res.status(500).json({ message: "Failed to create new user:" })
       })
   } else {
-    res.status(400).json({ message: "please provide an email and alphanumeric password"})
+    res.status(400).json({ message: "Must include name,  email, password, & location"})
   }
 });
 
 router.post("/login", (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
   if (isValid(req.body)) {
-    Users.findBy({ username: username })
+    Users.findBy({ email: email })
       .then(([user]) => {
         if( user && bcryptjs.compareSync(password, user.password)) {
           const token = getJwt(user);
@@ -37,7 +37,7 @@ router.post("/login", (req, res) => {
         }
       })
       .catch(error => {
-        res.status(500).json({ message: error.message, triggered: "by the username couldn't be found" });
+        res.status(500).json({ message: error.message, triggered: "by the email couldn't be found" });
       })
   } else {
     res.status(400).json({
