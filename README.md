@@ -25,6 +25,10 @@ inlc terminal commands for tests, setting up dev server,
 ### Josh's TODO:
 [ ] Logout endpoint
 
+```json
+code here
+```
+
 TEMPLATE TO ADJUST:
 <!--
 *** Thanks for checking out this README Template. If you have a suggestion that would

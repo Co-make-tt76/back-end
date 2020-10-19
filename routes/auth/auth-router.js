@@ -20,8 +20,8 @@ router.get('/users', (req, res) => {
 router.post("/register", (req, res) => {
   const credentials = req.body;
   if(isValid(credentials)){
-    // const rounds = process.env.BCRYPT_ROUNDS || 4;
-    const rounds = 4;
+    const rounds = parseInt(process.env.BCRYPT_ROUNDS) || 4;
+    // const rounds = 4;
     const hash = bcryptjs.hashSync(credentials.password, rounds);
     credentials.password = hash;
     Users.add(credentials)
@@ -29,7 +29,7 @@ router.post("/register", (req, res) => {
         res.status(201).json(user)
       })
       .catch(err => {
-        res.status(500).json({ message: "Failed to create new user", error: error.message })
+        res.status(500).json({ message: "Failed to create new user", error: err.message })
       })
   } else {
     res.status(400).json({ message: "Must include name,  email, password, & location"})
