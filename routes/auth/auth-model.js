@@ -17,7 +17,8 @@ async function add (user) {
       zip_code: user.zip_code
     };
 
-    const location_id = await addLocation(location)
+    // const location_id = await addLocation(location)
+    const location_id = 1
 
     const userInfo = {
       name: user.name,

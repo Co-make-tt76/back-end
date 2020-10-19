@@ -12,7 +12,7 @@ exports.seed = function(knex) {
           password: "josh",
           role: "user",
           phone: "123-123-1234",
-          location_id: "1"
+          location_id: 1
         },
         {
           id: 2,
@@ -21,7 +21,7 @@ exports.seed = function(knex) {
           password: "suzanne",
           role: "user",
           phone: "1231231234",
-          location_id: "1"
+          location_id: 1
         },
         {
           id: 3,
@@ -30,7 +30,7 @@ exports.seed = function(knex) {
           password: "phineas",
           role: "admin",
           phone: "1231231234",
-          location_id: "2"
+          location_id: 2
         },
       ]);
     });
