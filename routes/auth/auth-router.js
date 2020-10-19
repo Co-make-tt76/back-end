@@ -9,7 +9,8 @@ const { isValid } = require("./auth-services");
 router.post("/register", (req, res) => {
   const credentials = req.body;
   if(isValid(credentials)){
-    const rounds = process.env.BCRYPT_ROUNDS || 4;
+    // const rounds = process.env.BCRYPT_ROUNDS || 4;
+    const rounds = 4;
     const hash = bcryptjs.hashSync(credentials.password, rounds);
     credentials.password = hash;
     Users.add(credentials)
