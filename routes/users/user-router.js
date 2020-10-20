@@ -13,7 +13,7 @@ router.get('/all', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-  const id = params.id
+  const id = req.params.id
   Users.findById(id)
     .then(users => {
       res.status(200).json(users);
