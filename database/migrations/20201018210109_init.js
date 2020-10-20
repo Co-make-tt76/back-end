@@ -8,7 +8,7 @@ exports.up = function(knex) {
       users.string("email").notNullable().unique();
       users.string("password").notNullable();
       users.string("role").defaultTo("user").notNullable();
-      users.integer("phone");
+      users.bigInteger("phone");
       users.string("street_address");
       users.string("city").notNullable();
       users.string("state").notNullable();
