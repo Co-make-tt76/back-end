@@ -10,9 +10,8 @@ module.exports = {
 
 async function add (issue) {
   try {
-    const response = await db("issues").insert(issue, "id")
-    console.log(response)
-    return findById(1);
+    const [id] = await db("issues").insert(issue, "id")
+    return findById(id);
   } catch (error) {
     throw new Error(`cannot create issue ${issue.title}: ${error.message}`);
   }
