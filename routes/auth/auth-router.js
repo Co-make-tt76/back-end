@@ -3,19 +3,19 @@ const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const configs = require("../../api/configs");
-const Users = require("./auth-model");
+const Users = require("../users/user-model");
 const { isValid } = require("./auth-services");
 
-//temp/sanity check
-router.get('/users', (req, res) => {
-  Users.getAllUsers()
-    .then(users => {
-      res.status(201).json(users)
-    })
-    .catch(err => {
-      res.status(500).json({ message: "Failed to get all users" })
-    })
-})
+// //temp/sanity check
+// router.get('/users', (req, res) => {
+//   Users.getAllUsers()
+//     .then(users => {
+//       res.status(201).json(users)
+//     })
+//     .catch(err => {
+//       res.status(500).json({ message: "Failed to get all users" })
+//     })
+// })
 
 router.post("/register", (req, res) => {
   const credentials = req.body;

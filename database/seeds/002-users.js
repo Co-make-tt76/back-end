@@ -6,7 +6,7 @@ exports.seed = function(knex) {
       // Inserts seed entries
       return knex('users').insert([
         {
-          id: 1,
+          // id: 1,
           first_name: "Josh_just_wants_plants",
           last_name: "McGee",
           email: "josh@josh.com",
@@ -19,7 +19,7 @@ exports.seed = function(knex) {
           zip_code: 89502
         },
         {
-          id: 2,
+          // id: 2,
           first_name: "Suzanne 'Sweetie'",
           last_name: "Sweetheart",
           email: "suzanne@suzanne.com",
@@ -32,7 +32,7 @@ exports.seed = function(knex) {
           zip_code: 89502
         },
         {
-          id: 3,
+          // id: 3,
           first_name: "PHINEAS",
           last_name: "CRANKIUS",
           email: "phineas@phineas.com",

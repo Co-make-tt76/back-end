@@ -5,6 +5,8 @@ const db = require("../database/db-config");
 
 const authenticate = require('../routes/auth/authenticate-middleware.js');
 const authRouter = require('../routes/auth/auth-router');
+const userRouter = require("../routes/users/user-router");
+const issueRouter = require("../routes/issues/issue-router");
 
 const server = express();
 
@@ -14,15 +16,15 @@ server.use(cors());
 server.use(express.json());
 
 
-server.use('/api/auth', authRouter);
-// server.use('/api/user', userRouter);
-server.use('/api/issues', authRouter);
+server.use('/auth', authRouter);
+server.use('/user', userRouter);
+server.use('/issues', issueRouter);
 
 server.get('/status', async (req, res) => {
   //checking knex status too
   res.status(200).json({
     api: true,
-    // db: await getDbStatus(),
+    db: await getDbStatus(),
     //any other db's to check?
   });
 });

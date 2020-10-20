@@ -17,7 +17,6 @@ async function add (user) {
   }
 };
 
-//move to users-model
 function getAllUsers () {
   return db("users")
 }
