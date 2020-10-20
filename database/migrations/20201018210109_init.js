@@ -1,35 +1,25 @@
 
 exports.up = function(knex) {
   return knex.schema
-    .createTable("locations", locations => {
-      locations.increments();
-      locations.string("street_address");
-      locations.string("city").notNullable();
-      locations.string("state").notNullable();
-      locations.string("zip_code").notNullable();
-    })
-
     .createTable("users", users => {
       users.increments();
-      users.string("name").notNullable();
-      users.string("email").notNullable();
+      users.string("first_name").notNullable();
+      users.string("last_name").notNullable();
+      users.string("email").notNullable().unique();
       users.string("password").notNullable();
       users.string("role").defaultTo("user").notNullable();
-      users.string("phone");
-      users.integer("location_id")
-        .unsigned()
-        .notNullable()
-        .references('id')
-        .inTable('locations')
-        .onUpdate('CASCADE')
-        .onDelete('RESTRICT');
+      users.integer("phone");
+      users.string("street_address");
+      users.string("city").notNullable();
+      users.string("state").notNullable();
+      users.integer("zip_code").notNullable();
     })
 
     .createTable("issues", issues => {
       issues.increments();
       //Did I timestamps right???
       issues.timestamps(true, true);
-      issues.string("name").notNullable();
+      issues.string("title").notNullable();
       issues.text("description").notNullable();
       issues.integer("author_id")
         .unsigned()
@@ -38,16 +28,14 @@ exports.up = function(knex) {
         .inTable('users')
         .onUpdate('CASCADE')
         .onDelete('RESTRICT');
-      issues.integer("location_id")
-        .unsigned()
-        .notNullable()
-        .references('id')
-        .inTable('locations')
-        .onUpdate('CASCADE')
-        .onDelete('RESTRICT');
+      issues.string("street_address");
+      issues.string("address_notes");
+      issues.string("city").notNullable();
+      issues.string("state").notNullable();
+      issues.integer("zip_code").notNullable();
       issues.string("status").notNullable().defaultTo("new");
-      issues.integer("upvotes").notNullable();
-      issues.integer("downvotes").notNullable();
+      issues.integer("upvotes").notNullable().defaultTo(0);
+      issues.integer("downvotes").notNullable().defaultTo(0);
     })
 
     .createTable("comments", comments => {
@@ -67,8 +55,8 @@ exports.up = function(knex) {
         .inTable('issues')
         .onUpdate('CASCADE')
         .onDelete('RESTRICT');
-      comments.integer("upvotes").notNullable()
-      comments.integer("downvotes").notNullable()
+      comments.integer("upvotes").notNullable().defaultTo(0);
+      comments.integer("downvotes").notNullable().defaultTo(0);
       comments.timestamps(true, true);
     })
 
@@ -89,8 +77,8 @@ exports.up = function(knex) {
         .inTable('issues')
         .onUpdate('CASCADE')
         .onDelete('RESTRICT');
-      suggestions.integer("upvotes").notNullable()
-      suggestions.integer("downvotes").notNullable()
+      suggestions.integer("upvotes").notNullable().defaultTo(0);
+      suggestions.integer("downvotes").notNullable().defaultTo(0);
       suggestions.timestamps(true, true);
     });
 };
@@ -100,6 +88,5 @@ exports.down = function(knex) {
     .dropTableIfExists("suggestions")
     .dropTableIfExists("comments")
     .dropTableIfExists("issues")
-    .dropTableIfExists("users")
-    .dropTableIfExists("locations");
+    .dropTableIfExists("users");
 };
