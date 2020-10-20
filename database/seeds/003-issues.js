@@ -6,7 +6,7 @@ exports.seed = function(knex) {
       // Inserts seed entries
       return knex('issues').insert([
         {
-          id: 1,
+          // id: 1,
           title: "Illegal trash dumping",
           description: "Trashbags have been abandoned in the empty lot next to my home",
           author_id: 2,
@@ -20,7 +20,7 @@ exports.seed = function(knex) {
           status: "new",
         },
         {
-          id: 2,
+          // id: 2,
           title: "Park weeds",
           description: "Everytime I go to take a nap at the park, I end up laying in a goathead patch. With the number of kids and dogs that play in the grass, this is becoming a serious danger",
           author_id: 3,
@@ -34,7 +34,7 @@ exports.seed = function(knex) {
           status: "in progress",
         },
         {
-          id: 3,
+          // id: 3,
           title: "More tree mulching please",
           description: "I love when we have those community mulching times at the park, can we schedule them more often, pretty please?",
           author_id: 1,
@@ -47,7 +47,7 @@ exports.seed = function(knex) {
           status: "notified",
         },
         {
-          id: 4,
+          // id: 4,
           title: "HOMOCIDAL DUCKS",
           description: "HAVE YOU SEEN HOW MANY DUCKS ARE TAKING OVER THE MARINA??? HOW AM I SUPPOSED TO ENJOY MY WALK WHEN THEY VISCIOUSLY TRY TO ATTACK ME EVERY TIME I GET THERE",
           author_id: 3,
