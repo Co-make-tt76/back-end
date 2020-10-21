@@ -43,7 +43,7 @@ router.post("/login", (req, res) => {
       .then(([user]) => {
         if( user && bcryptjs.compareSync(password, user.password)) {
           const token = getJwt(user);
-          res.status(200).json({ message: "login post success", token })
+          res.status(200).json({ message: "login post success", token, userId: user.id })
         } else {
           res.status(500).json({ message: error.message, triggered: "after compareSync failed" })
         }
