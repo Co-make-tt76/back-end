@@ -59,23 +59,20 @@ router.put("/:id", (req, res) => {
     })
 })
 
-//helper:
-//   db('posts').where({ id: req.params.id }).delete()
-// router.delete('/:id', (req, res) => {
-//   const { id } = req.params;
-
-//   Schemes.remove(id)
-//   .then(deleted => {
-//     if (deleted) {
-//       res.json({ removed: deleted });
-//     } else {
-//       res.status(404).json({ message: 'Could not find scheme with given id' });
-//     }
-//   })
-//   .catch(err => {
-//     res.status(500).json({ message: 'Failed to delete scheme' });
-//   });
-// });
+router.delete('/:id', (req, res) => {
+  const { id } = req.params;
+  Issues.remove(id)
+  .then(deleted => {
+    if (deleted) {
+      res.json({ removed: deleted });
+    } else {
+      res.status(404).json({ message: 'Could not find scheme with given id. Error' });
+    }
+  })
+  .catch(err => {
+    res.status(500).json({ message: 'Failed to delete scheme. Error:' + error.message });
+  });
+});
 
 
 module.exports = router;
