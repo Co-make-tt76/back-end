@@ -29,6 +29,10 @@ server.get('/status', async (req, res) => {
   });
 });
 
+server.use("/", (req, res) => {
+  res.status(200).json({message: "this endpoint doesn't exist, did you spell it correctly?"})
+})
+
 module.exports = server;
 
 async function getDbStatus() {

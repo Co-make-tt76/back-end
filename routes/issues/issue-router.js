@@ -2,16 +2,53 @@ const Issues = require('./issue-model');
 
 const router = require('express').Router();
 
-router.get('/all', (req, res) => {
+//get all issues w comments
+router.get('/all', async (req, res) => {
+  let commentList = await Issues.findAllComments()
+  let suggestionList = await Issues.findAllSuggestions()
   Issues.getAllIssues()
-    .then(issues => {
-      res.status(200).json(issues);
+    .then(arrayOfIssues => {
+      arrayOfIssues.map(issue => {
+
+        issue.comments = commentList.filter(comment => {
+          return comment.issue_id == issue.id
+        });
+        issue.suggestions = suggestionList.filter(suggestion => {
+          return suggestion.issue_id == issue.id
+        })
+
+      })
+      res.status(200).json(arrayOfIssues)
     })
     .catch(err => {
       res.status(500).json({ message: 'Error Fetching Issues', error: err });
     });
 });
 
+
+// get all comments
+router.get('/comments', (req, res) => {
+  Issues.findAllComments()
+    .then(comments => {
+      res.status(200).json(comments)
+    })
+    .catch(err => {
+      res.status(500).json({ message: 'Error Finding comments', error: err });
+    });
+});
+
+// get all suggestions
+router.get('/suggestions', (req, res) => {
+  Issues.findAllSuggestions()
+    .then(suggestions => {
+      res.status(200).json(suggestions)
+    })
+    .catch(err => {
+      res.status(500).json({ message: 'Error Finding suggestions', error: err });
+    });
+});
+
+//get specific issue
 router.get('/:id', (req, res) => {
   const id = req.params.id
   Issues.findById(id)
@@ -23,6 +60,7 @@ router.get('/:id', (req, res) => {
     });
 });
 
+//post a new issue
 router.post("/", (req, res) => {
   Issues.add(req.body)
     .then(issue => {
@@ -33,7 +71,7 @@ router.post("/", (req, res) => {
     })
 })
 
-
+//edit existing issue
 router.put("/:id", (req, res) => {
   const { id } = req.params;
   const changes = req.body;
@@ -41,7 +79,6 @@ router.put("/:id", (req, res) => {
   Issues.findById(id) //check that exists in db, but I'm debating removing this
     .then(issue => {
       if (issue) {
-        //this might drop/reset the up/downvotes. check after successfully editing
         Issues.update(changes, id)//update it
           .then(updatedissue => {
             res.json(updatedissue);
@@ -59,6 +96,7 @@ router.put("/:id", (req, res) => {
     })
 })
 
+// delete issue
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
   Issues.remove(id)
@@ -70,12 +108,11 @@ router.delete('/:id', (req, res) => {
     }
   })
   .catch(err => {
-    res.status(500).json({ message: 'Failed to delete scheme. Error:' + error.message });
+    res.status(500).json({ message: 'Failed to delete scheme. Error:' + err.message });
   });
 });
 
-
-module.exports = router;
+ module.exports = router;
 
 function isValid(req, res, next) {
   const { title, description, author_id, city, state } = req.body
