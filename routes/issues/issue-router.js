@@ -24,7 +24,6 @@ router.get('/:id', (req, res) => {
 });
 
 router.post("/", (req, res) => {
-  console.log("gets inside the post")
   Issues.add(req.body)
     .then(issue => {
       res.status(200).json(issue)
@@ -33,6 +32,51 @@ router.post("/", (req, res) => {
       res.status(500).json({ message: 'Error Posting Issue', error: err.message });
     })
 })
+
+
+router.put("/:id", (req, res) => {
+  const { id } = req.params;
+  const changes = req.body;
+  //TODO: validate changes
+  Issues.findById(id) //check that exists in db, but I'm debating removing this
+    .then(issue => {
+      if (issue) {
+        //this might drop/reset the up/downvotes. check after successfully editing
+        Issues.update(changes, id)//update it
+          .then(updatedissue => {
+            res.json(updatedissue);
+          })
+          .catch(error => {
+            console.log("inside the .catch", error)
+            res.status(500).json({ message: "failed to update", error: error.message })
+          })
+      } else {
+        res.status(404).json({ message: 'Could not find issue with given id' });
+      };
+    })
+    .catch(error => {
+      res.status(404).json({ message: 'Could not find issue with given id, error:'+ error.message  })
+    })
+})
+
+//helper:
+//   db('posts').where({ id: req.params.id }).delete()
+// router.delete('/:id', (req, res) => {
+//   const { id } = req.params;
+
+//   Schemes.remove(id)
+//   .then(deleted => {
+//     if (deleted) {
+//       res.json({ removed: deleted });
+//     } else {
+//       res.status(404).json({ message: 'Could not find scheme with given id' });
+//     }
+//   })
+//   .catch(err => {
+//     res.status(500).json({ message: 'Failed to delete scheme' });
+//   });
+// });
+
 
 module.exports = router;
 
