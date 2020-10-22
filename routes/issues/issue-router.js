@@ -1,6 +1,7 @@
 const Issues = require('./issue-model');
 const Users = require('../users/user-model');
-const { getAllUsers } = require('../users/user-model');
+
+const authenticate = require("../auth/authenticate-middleware");
 
 const router = require('express').Router();
 
@@ -31,9 +32,9 @@ router.get('/all', async (req, res) => {
     });
 });
 
-
+//everything after this point should have to pass authenticate. I think there's a way to do it with router.use/, but figured I'd poke that later & again, just do the simple, safe, dirty work. (yes it's only as safe as my memory to include it in every router, i know.)
 // get all comments
-router.get('/comments', (req, res) => {
+router.get('/comments', authenticate, (req, res) => {
   Issues.findAllComments()
     .then(comments => {
       res.status(200).json(comments)
@@ -44,7 +45,7 @@ router.get('/comments', (req, res) => {
 });
 
 // get all suggestions
-router.get('/suggestions', (req, res) => {
+router.get('/suggestions', authenticate, (req, res) => {
   Issues.findAllSuggestions()
     .then(suggestions => {
       res.status(200).json(suggestions)
@@ -55,7 +56,7 @@ router.get('/suggestions', (req, res) => {
 });
 
 //get specific issue
-router.get('/:id', (req, res) => {
+router.get('/:id', authenticate, (req, res) => {
   const id = req.params.id
   Issues.findById(id)
     .then(issues => {
@@ -67,7 +68,7 @@ router.get('/:id', (req, res) => {
 });
 
 //post a new issue
-router.post("/", (req, res) => {
+router.post("/", authenticate, (req, res) => {
   Issues.addIssue(req.body)
     .then(issue => {
       res.status(200).json(issue)
@@ -78,7 +79,7 @@ router.post("/", (req, res) => {
 })
 
 //post a new comment
-router.post("/comment", (req, res) => {
+router.post("/comment", authenticate, (req, res) => {
   Issues.addComment(req.body)
     .then(comment => {
       res.status(200).json(comment)
@@ -89,7 +90,7 @@ router.post("/comment", (req, res) => {
 })
 
 //post a new suggestion
-router.post("/suggestion", (req, res) => {
+router.post("/suggestion", authenticate, (req, res) => {
   Issues.addSuggestion(req.body)
     .then(suggestion => {
       res.status(200).json(suggestion)
@@ -100,7 +101,7 @@ router.post("/suggestion", (req, res) => {
 })
 
 //edit suggestion
-router.put("/suggestion/:id", (req, res) => {
+router.put("/suggestion/:id", authenticate, (req, res) => {
   const { id } = req.params;
   const changes = req.body;
   //TODO: validate changes
@@ -125,7 +126,7 @@ router.put("/suggestion/:id", (req, res) => {
 })
 
 //edit comment
-router.put("/comment/:id", (req, res) => {
+router.put("/comment/:id", authenticate, (req, res) => {
   const { id } = req.params;
   const changes = req.body;
   //TODO: validate changes
@@ -150,7 +151,7 @@ router.put("/comment/:id", (req, res) => {
 })
 
 //edit issue
-router.put("/:id", (req, res) => {
+router.put("/:id", authenticate, (req, res) => {
   const { id } = req.params;
   const changes = req.body;
   //TODO: validate changes
@@ -175,7 +176,7 @@ router.put("/:id", (req, res) => {
 })
 
 // delete comment
-router.delete('/comment/:id', (req, res) => {
+router.delete('/comment/:id', authenticate, (req, res) => {
   const { id } = req.params;
   Issues.removeComment(id)
   .then(deleted => {
@@ -191,7 +192,7 @@ router.delete('/comment/:id', (req, res) => {
 });
 
 // delete suggestion
-router.delete('/suggestion/:id', (req, res) => {
+router.delete('/suggestion/:id', authenticate, (req, res) => {
   const { id } = req.params;
   Issues.removeSuggestion(id)
   .then(deleted => {
@@ -207,7 +208,7 @@ router.delete('/suggestion/:id', (req, res) => {
 });
 
 // delete issue
-router.delete('/:id', (req, res) => {
+router.delete('/:id', authenticate, (req, res) => {
   const { id } = req.params;
   Issues.removeIssue(id)
   .then(deleted => {

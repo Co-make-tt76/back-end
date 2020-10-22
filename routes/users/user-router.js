@@ -2,6 +2,7 @@ const Users = require('./user-model');
 
 const router = require('express').Router();
 
+//get all users
 router.get('/all', (req, res) => {
   Users.getAllUsers()
     .then(users => {
@@ -11,7 +12,7 @@ router.get('/all', (req, res) => {
       res.status(500).json({ message: 'Error Fetching Users', error: err });
     });
 });
-
+// /get a user
 router.get('/:id', (req, res) => {
   const id = req.params.id
   Users.findById(id)

@@ -13,6 +13,6 @@ module.exports = (req, res, next) => {
       }
     })
   } else {
-    res.status(401).json({ you: 'shall not pass!', message: "missing authorization header" });
+    res.status(401).json({ you: 'shall not pass!', message: "missing authorization header, please login" });
   }
 };

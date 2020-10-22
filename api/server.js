@@ -3,7 +3,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const db = require("../database/db-config");
 
-const authenticate = require('../routes/auth/authenticate-middleware.js');
+const authenticate = require('../routes/auth/authenticate-middleware');
 const authRouter = require('../routes/auth/auth-router');
 const userRouter = require("../routes/users/user-router");
 const issueRouter = require("../routes/issues/issue-router");
@@ -16,8 +16,9 @@ server.use(cors());
 server.use(express.json());
 
 
+
 server.use('/auth', authRouter);
-server.use('/user', userRouter);
+server.use('/user', authenticate, userRouter);
 server.use('/issues', issueRouter);
 
 server.get('/status', async (req, res) => {
