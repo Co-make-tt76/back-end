@@ -1,9 +1,13 @@
 const db = require("../../database/db-config")
 
 module.exports = {
-  add,
+  addIssue,
+  addComment,
+  addSuggestion,
   getAllIssues,
   findById,
+  findCommentById,
+  findSuggestionById,
   findAllComments,
   findAllSuggestions,
   findBy,
@@ -12,7 +16,7 @@ module.exports = {
 };
 
 
-async function add (issue) {
+async function addIssue (issue) {
   try {
     const [id] = await db("issues").insert(issue, "id")
     return findById(id);
@@ -20,9 +24,25 @@ async function add (issue) {
     throw new Error(`cannot create issue ${issue.title}: ${error.message}`);
   }
 };
-// select i.*, c.*
-// from issues as i
-// join comments as c on c.issue_id = i.id
+
+async function addComment (comment) {
+  try {
+    const [id] = await db("comments").insert(comment, "id")
+    return findCommentById(id);
+  } catch (error) {
+    throw new Error(`cannot create comment ${comment.title}: ${error.message}`);
+  }
+};
+
+async function addSuggestion (suggestion) {
+  try {
+    const [id] = await db("suggestions").insert(suggestion, "id")
+    return findSuggestionById(id);
+  } catch (error) {
+    throw new Error(`cannot create suggestion ${suggestion.title}: ${error.message}`);
+  }
+};
+
 function getAllIssues () {
   return db("issues as i")
     .join("comments as c", "c.issue_id", "i.id")
@@ -40,6 +60,14 @@ function findBy (filter) {
 
 function findById(id) {
   return db("issues")
+  .where({ id }).first();
+}
+function findCommentById(id) {
+  return db("comments")
+  .where({ id }).first();
+}
+function findSuggestionById(id) {
+  return db("suggestions")
   .where({ id }).first();
 }
 

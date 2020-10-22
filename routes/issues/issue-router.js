@@ -62,12 +62,35 @@ router.get('/:id', (req, res) => {
 
 //post a new issue
 router.post("/", (req, res) => {
-  Issues.add(req.body)
+  Issues.addIssue(req.body)
     .then(issue => {
       res.status(200).json(issue)
     })
     .catch(err => {
       res.status(500).json({ message: 'Error Posting Issue', error: err.message });
+    })
+})
+
+//post a new comment
+//do I need the ":id"???
+router.post("/comment", (req, res) => {
+  Issues.addComment(req.body)
+    .then(comment => {
+      res.status(200).json(comment)
+    })
+    .catch(err => {
+      res.status(500).json({ message: 'Error Posting Comment', error: err.message });
+    })
+})
+
+//post a new suggestion
+router.post("/suggestion", (req, res) => {
+  Issues.addSuggestion(req.body)
+    .then(suggestion => {
+      res.status(200).json(suggestion)
+    })
+    .catch(err => {
+      res.status(500).json({ message: 'Error Posting Suggestion', error: err.message });
     })
 })
 
