@@ -4,7 +4,7 @@ const { getAllUsers } = require('../users/user-model');
 
 const router = require('express').Router();
 
-//get all issues w comments
+//get all issues w comments, suggestion, and author data attatched & in the structure front-end wants. I'm sure theres a more elegant solution, but this works for quick and dirty.
 router.get('/all', async (req, res) => {
   let commentList = await Issues.findAllComments()
   let suggestionList = await Issues.findAllSuggestions()
@@ -78,7 +78,6 @@ router.post("/", (req, res) => {
 })
 
 //post a new comment
-//do I need the ":id"???
 router.post("/comment", (req, res) => {
   Issues.addComment(req.body)
     .then(comment => {
@@ -100,7 +99,57 @@ router.post("/suggestion", (req, res) => {
     })
 })
 
-//edit existing issue
+//edit suggestion
+router.put("/suggestion/:id", (req, res) => {
+  const { id } = req.params;
+  const changes = req.body;
+  //TODO: validate changes
+  Issues.findSuggestionById(id) //check that exists in db, but I'm debating removing this
+    .then(suggestion => {
+      if (suggestion) {
+        Issues.updateSuggestion(changes, id, "suggestions")//update it
+          .then(updatedsuggestion => {
+            res.json(updatedsuggestion);
+          })
+          .catch(error => {
+            console.log("inside the .catch", error)
+            res.status(500).json({ message: "failed to update", error: error.message })
+          })
+      } else {
+        res.status(404).json({ message: 'Could not find suggestion with given id' });
+      };
+    })
+    .catch(error => {
+      res.status(404).json({ message: 'Could not find suggestion with given id, error:'+ error.message  })
+    })
+})
+
+//edit comment
+router.put("/comment/:id", (req, res) => {
+  const { id } = req.params;
+  const changes = req.body;
+  //TODO: validate changes
+  Issues.findCommentById(id) //check that exists in db, but I'm debating removing this
+    .then(comment => {
+      if (comment) {
+        Issues.updateComment(changes, id)//update it
+          .then(updatedComment => {
+            res.json(updatedComment);
+          })
+          .catch(error => {
+            console.log("inside the .catch", error)
+            res.status(500).json({ message: "failed to update", error: error.message })
+          })
+      } else {
+        res.status(404).json({ message: 'Could not find comment with given id' });
+      };
+    })
+    .catch(error => {
+      res.status(404).json({ message: 'Could not find comment with given id, error:'+ error.message  })
+    })
+})
+
+//edit issue
 router.put("/:id", (req, res) => {
   const { id } = req.params;
   const changes = req.body;
@@ -108,7 +157,7 @@ router.put("/:id", (req, res) => {
   Issues.findById(id) //check that exists in db, but I'm debating removing this
     .then(issue => {
       if (issue) {
-        Issues.update(changes, id)//update it
+        Issues.updateIssue(changes, id, 'issues')//update it
           .then(updatedissue => {
             res.json(updatedissue);
           })

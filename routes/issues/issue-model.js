@@ -11,7 +11,9 @@ module.exports = {
   findAllComments,
   findAllSuggestions,
   findBy,
-  update,
+  updateIssue,
+  updateComment,
+  updateSuggestion,
   remove,
 };
 
@@ -43,14 +45,14 @@ async function addSuggestion (suggestion) {
   }
 };
 
-function getAllIssues () {
-  return db("issues as i")
-    .join("comments as c", "c.issue_id", "i.id")
-    .select("c.*", "i.*")
-}
+// function getAllIssues () {
+//   return db("issues as i")
+//     .join("comments as c", "c.issue_id", "i.id")
+//     .select("c.*", "i.*")
+// }
 
 function getAllIssues () {
-  return db("issues")
+  return db("issues").orderBy("created_at")
 }
 
 function findBy (filter) {
@@ -78,9 +80,20 @@ function findAllComments() {
 function findAllSuggestions() {
   return db("suggestions")
 }
+//why does this break if I try to pass in a table name instead of hardcoding it? I could have suuuuuuch cleaner code, but it won't cooperate
+// function update(changes, id, tableName) {
+//   return db(tableName).where({ id }).update(changes)
+// }
+function updateIssue(changes, id) {
+  return db("issues").where({ id }).update(changes)
+}
 
-function update(changes, id) {
-  return db('issues').where({ id }).update(changes)
+function updateComment(changes, id) {
+  return db("comments").where({ id }).update(changes)
+}
+
+function updateSuggestion(changes, id) {
+  return db("suggestions").where({ id }).update(changes)
 }
 
 function remove(id) {
