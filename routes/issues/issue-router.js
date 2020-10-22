@@ -1,4 +1,6 @@
 const Issues = require('./issue-model');
+const Users = require('../users/user-model');
+const { getAllUsers } = require('../users/user-model');
 
 const router = require('express').Router();
 
@@ -6,6 +8,7 @@ const router = require('express').Router();
 router.get('/all', async (req, res) => {
   let commentList = await Issues.findAllComments()
   let suggestionList = await Issues.findAllSuggestions()
+  let authorList = await Users.getAllUsers()
   Issues.getAllIssues()
     .then(arrayOfIssues => {
       arrayOfIssues.map(issue => {
@@ -15,6 +18,9 @@ router.get('/all', async (req, res) => {
         });
         issue.suggestions = suggestionList.filter(suggestion => {
           return suggestion.issue_id == issue.id
+        })
+        issue.user = authorList.filter(author => {
+          return author.id == issue.author_id
         })
 
       })
