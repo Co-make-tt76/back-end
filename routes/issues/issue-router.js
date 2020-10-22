@@ -174,10 +174,42 @@ router.put("/:id", (req, res) => {
     })
 })
 
+// delete comment
+router.delete('/comment/:id', (req, res) => {
+  const { id } = req.params;
+  Issues.removeComment(id)
+  .then(deleted => {
+    if (deleted) {
+      res.json({ removed: deleted });
+    } else {
+      res.status(404).json({ message: 'Could not find scheme with given id. Error' });
+    }
+  })
+  .catch(err => {
+    res.status(500).json({ message: 'Failed to delete scheme. Error:' + err.message });
+  });
+});
+
+// delete suggestion
+router.delete('/suggestion/:id', (req, res) => {
+  const { id } = req.params;
+  Issues.removeSuggestion(id)
+  .then(deleted => {
+    if (deleted) {
+      res.json({ removed: deleted });
+    } else {
+      res.status(404).json({ message: 'Could not find scheme with given id. Error' });
+    }
+  })
+  .catch(err => {
+    res.status(500).json({ message: 'Failed to delete scheme. Error:' + err.message });
+  });
+});
+
 // delete issue
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
-  Issues.remove(id)
+  Issues.removeIssue(id)
   .then(deleted => {
     if (deleted) {
       res.json({ removed: deleted });
